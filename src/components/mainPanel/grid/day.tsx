@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import './day.scss';
 
 type DayProps = {
   date: Date
@@ -13,8 +14,8 @@ function Day(props:DayProps) {
   }, [])
 
   return (
-    <div className="Day">
-        {props.date.getMonth()+'/'+props.date.getDate()+'/'+props.date.getFullYear()}
+    <div className="day">
+        {(props.date.getMonth()+1)+'/'+props.date.getDate()+'/'+props.date.getFullYear()}
     </div>
   );
 }

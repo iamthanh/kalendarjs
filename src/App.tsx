@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import SchedulePanel from './components/schedulePanel';
 import MainPanel from './components/mainPanel';
+import './kalendarjs.scss';
 
 function KalendarJs() {
 
@@ -20,13 +21,8 @@ function KalendarJs() {
 
   return (
     <div className="KalendarJs">
-      
-      <SchedulePanel 
-      />
-
-      <MainPanel 
-      />
-
+      <SchedulePanel />
+      <MainPanel />
     </div>
   );
 }

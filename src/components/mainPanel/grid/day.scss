@@ -1,0 +1,16 @@
+.day {  
+  padding: 5px;
+  flex: 1 0 14%;
+  border-right: 1px solid #d5d5d5;
+  width: 50%;
+  box-sizing: border-box;
+  min-height: 100px;
+
+  &:last-child {
+    border-right: none;
+  }
+
+  &:hover {
+    background: #f2f2f2;
+  }
+}

@@ -4,13 +4,8 @@ import Grid from './grid';
 function MainPanel() {
 
   return (
-    <div className="MainPanel">
-      
-      <Grid 
-
-      />
-
-
+    <div className="main-panel">
+      <Grid />
     </div>
   );
 }

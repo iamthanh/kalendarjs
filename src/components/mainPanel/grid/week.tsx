@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Day from './day';
+import './week.scss';
 
 type WeekProps = {
   startingDate?: number,
@@ -25,7 +26,7 @@ const Week = (props: WeekProps) => {
         />
       );
 
-      while (_days.length < 6) {
+      while (_days.length < 7) {
         // Add date 
         _days.push(
           <Day
@@ -44,7 +45,7 @@ const Week = (props: WeekProps) => {
   }, [])
 
   return (
-    <div className="Week">
+    <div className="week">
       {days}
     </div>
   );

@@ -1,8 +1,9 @@
 import React from 'react';
+import './schedulePanel.scss';
 
 function SchedulePanel() {
   return (
-    <div className="SchedulePanel">
+    <div className="schedule-panel">
       this is schedule panel
     </div>
   );

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Week from './week';
+import './grid.scss';
 
 function Grid() {
 
@@ -10,7 +11,7 @@ function Grid() {
   const [preloadMonthsAfter, setPreloadMonthsAfter] = useState<number>(1);
 
   let weeksGenerated: any = [];
-  let maxInitWeeks = 4;
+  let maxInitWeeks = 9;
 
   const currentDate = new Date();
   const startingDayOfWeek = 1; // Monday, 0 is Sunday
