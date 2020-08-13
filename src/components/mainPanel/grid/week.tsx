@@ -14,10 +14,16 @@ const Week = (props: WeekProps) => {
   useEffect(() => {
     const generateDaysForWeek = (): Array<JSX.Element> => {
       let i = 0;
-      let _days: Array<JSX.Element> = [];
-
-      let _fullDate: string = ((props.startingMonth?props.startingMonth:0)+1) + '/' + props.startingDate + '/' + props.startingYear;
+      let _fullDate: string = ((props.startingMonth ? props.startingMonth : 0) + 1) + '/' + props.startingDate + '/' + props.startingYear;
       let _date = new Date(_fullDate);
+
+      let _days: Array<JSX.Element> = [];
+      _days.push(
+        <Day
+          key={new Date(_fullDate).getTime()}
+          date={new Date(_fullDate)}
+        />
+      );
 
       while (_days.length < 6) {
         // Add date 
@@ -39,7 +45,6 @@ const Week = (props: WeekProps) => {
 
   return (
     <div className="Week">
-      Week is starting on {props.startingMonth}/{props.startingDate}/{props.startingYear}
       {days}
     </div>
   );
