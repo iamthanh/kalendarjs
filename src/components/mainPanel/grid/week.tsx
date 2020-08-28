@@ -6,10 +6,13 @@ type WeekProps = {
   startingDate?: number,
   startingMonth?: number
   startingYear?: number
+  selectedDate: Date
+  setSelectedDate: Function
 }
 
 const Week = (props: WeekProps) => {
 
+  const [weeksGenerated, setWeeksGenerated] = useState(false);
   const [days, setDays] = useState<JSX.Element[]>([]);
 
   useEffect(() => {
@@ -17,12 +20,14 @@ const Week = (props: WeekProps) => {
       let i = 0;
       let _fullDate: string = ((props.startingMonth ? props.startingMonth : 0) + 1) + '/' + props.startingDate + '/' + props.startingYear;
       let _date = new Date(_fullDate);
-
       let _days: Array<JSX.Element> = [];
+
       _days.push(
         <Day
+          selected={props.selectedDate}
           key={new Date(_fullDate).getTime()}
           date={new Date(_fullDate)}
+          setSelectedDate={props.setSelectedDate}
         />
       );
 
@@ -30,8 +35,10 @@ const Week = (props: WeekProps) => {
         // Add date 
         _days.push(
           <Day
+            selected={props.selectedDate}
             key={_date.toDateString()}
             date={_date}
+            setSelectedDate={props.setSelectedDate}
           />
         )
         // Move date up a day and update _date
@@ -40,9 +47,9 @@ const Week = (props: WeekProps) => {
       }
       return _days;
     }
-    // console.log(startingDate, startingMonth, startingYear)
     setDays(generateDaysForWeek());
-  }, [])
+    setWeeksGenerated(true);
+  }, [props.selectedDate])
 
   return (
     <div className="week">

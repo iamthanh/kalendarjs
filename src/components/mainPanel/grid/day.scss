@@ -1,16 +1,46 @@
 .day {  
-  padding: 5px;
   flex: 1 0 14%;
   border-right: 1px solid #d5d5d5;
-  width: 50%;
   box-sizing: border-box;
-  min-height: 100px;
+  min-height: 130px;
+  cursor: pointer;
+
+  .header {
+    padding: 10px;
+
+    .day-number {
+      height: 28px;
+      width: 28px;
+      background: white;
+      border-radius: 50%;
+      position: relative;
+      border: 1px solid #d5d5d5;
+
+      .number {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        line-height: 0;
+      }
+    }
+  }
+
+  &.selected {
+    .day-number {
+      background: grey !important;
+      border-color: grey !important;
+      color: #f2f2f2;
+    }
+  }
 
   &:last-child {
     border-right: none;
   }
 
   &:hover {
-    background: #f2f2f2;
+    .day-number {
+      background: #f2f2f2;
+    }
   }
 }
