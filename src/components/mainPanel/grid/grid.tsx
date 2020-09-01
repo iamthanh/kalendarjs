@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import Week from './week';
+import Week from './week/week';
 import './grid.scss';
-import GridHeader from './gridHeader';
+import GridHeader from './gridHeader/gridHeader';
+import { createStore } from 'redux';
+
+import dayReducer from '../../../reducers/selectedDay.reducer';
+
 
 function Grid() {
+
+  let store = createStore(dayReducer);
+
+  console.log(store.getState());
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [renderedWeeks, setRenderedWeeks] = useState<JSX.Element[]>([]);
@@ -18,7 +26,7 @@ function Grid() {
 
   const startingDayOfWeek = 1; // Monday, 0 is Sunday
 
-  useEffect(() =>  {
+  useEffect(() => {
     const generateWeeks = (): Array<JSX.Element> => {
 
       let i: number = 0;
@@ -26,11 +34,11 @@ function Grid() {
 
       // We start out with building the current week
       let currentDate = new Date();
-      let _date:Date = getStartingDateOfWeek(new Date(currentDate.setDate(currentDate.getDate()-(7*maxInitWeeks/2))));
+      let _date: Date = getStartingDateOfWeek(new Date(currentDate.setDate(currentDate.getDate() - (7 * maxInitWeeks / 2))));
 
       while (_weeks.length < maxInitWeeks) {
         // push a week to the end
-        let forwardTemp = new Date(_date.setDate(_date.getDate()+7));
+        let forwardTemp = new Date(_date.setDate(_date.getDate() + 7));
         _weeks.push(
           <Week
             key={i}
@@ -46,7 +54,7 @@ function Grid() {
       return _weeks;
     }
 
-    const getStartingDateOfWeek = (date:Date): Date => {
+    const getStartingDateOfWeek = (date: Date): Date => {
       let _day: Date = date;
       // Move back til monday
       while (_day.getDay() !== startingDayOfWeek) {
@@ -59,10 +67,12 @@ function Grid() {
   }, [selectedDate])
 
   return (
-    <div className="grid">
+    <React.Fragment>
       <GridHeader />
-      {renderedWeeks}
-    </div>
+      <div className="grid">
+        {renderedWeeks}
+      </div>
+    </React.Fragment>
   );
 }
 

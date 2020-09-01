@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import SchedulePanel from './components/schedulePanel';
-import MainPanel from './components/mainPanel';
+import SchedulePanel from './components/schedulePanel/schedulePanel';
+import MainPanel from './components/mainPanel/mainPanel';
 import './kalendarjs.scss';
 
 function KalendarJs() {
