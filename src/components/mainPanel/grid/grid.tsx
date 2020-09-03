@@ -2,16 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Week from './week/week';
 import './grid.scss';
 import GridHeader from './gridHeader/gridHeader';
-import { createStore } from 'redux';
-
-import dayReducer from '../../../reducers/selectedDay.reducer';
 
 
 function Grid() {
-
-  let store = createStore(dayReducer);
-
-  console.log(store.getState());
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [renderedWeeks, setRenderedWeeks] = useState<JSX.Element[]>([]);

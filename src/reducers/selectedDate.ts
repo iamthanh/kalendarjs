@@ -1,5 +1,3 @@
-
-
 const UPDATE_SELECTED_DATE = 'selectedDate/update';
 
 type action = {
@@ -7,14 +5,14 @@ type action = {
   date: Date
 }
 
-function CounterReducer(state = new Date(), action:action) {
+const CounterReducer = (value = new Date(), action:action) => {
   if (action.type === UPDATE_SELECTED_DATE) {
     return {
-      ...state,
+      ...value,
       value: action.date
     }
   }
-  return state
+  return value
 }
 
 export default CounterReducer;
