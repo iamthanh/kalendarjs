@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Day from './day';
+import Day from '../day/day';
 import './week.scss';
 
 type WeekProps = {
