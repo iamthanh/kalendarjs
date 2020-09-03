@@ -2,17 +2,14 @@ const UPDATE_SELECTED_DATE = 'selectedDate/update';
 
 type action = {
   type: string,
-  date: Date
+  payload: any
 }
 
-const CounterReducer = (value = new Date(), action:action) => {
+const SelectedDateReducer = (state=null, action:action) => {
   if (action.type === UPDATE_SELECTED_DATE) {
-    return {
-      ...value,
-      value: action.date
-    }
+    return action.payload
   }
-  return value
+  return state
 }
 
-export default CounterReducer;
+export default SelectedDateReducer;

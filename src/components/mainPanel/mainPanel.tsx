@@ -1,8 +1,8 @@
 import React from 'react';
 import Grid from './grid/grid';
+import { connect } from 'react-redux'
 
-function MainPanel() {
-
+const MainPanel = () => {
   return (
     <div className="main-panel">
       <Grid />
@@ -10,4 +10,6 @@ function MainPanel() {
   );
 }
 
-export default MainPanel;
+const mapStateToProps = (state:any) => state;
+const ConnectedMainPanel = connect(mapStateToProps)(MainPanel)
+export default ConnectedMainPanel
