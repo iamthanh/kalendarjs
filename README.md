@@ -1,4 +1,17 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Kalendarjs is a full screen calendar app using react. It is meant to look and have a similar feel to Google calendar but with a few additional features.
+
+### Features 
+- Create new events
+  - Quickly create via modal
+  - Create it via full page editor
+- Edit existing events (via full page editor)
+- Upcoming schedule on the left panel
+- Events can be set priority level 
+- Events can have sub-events
+- Events can be linked to have dependency between each other
+- Horizon view for events
+  - Connected or related events are spanned across multiple months
+- Analytics page that shows in depth breakdown of stats of created events
 
 ## Available Scripts
 
