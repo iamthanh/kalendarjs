@@ -14,12 +14,15 @@ mongoose.connect(config.database.mongodb.url, config.database.mongodb.options);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
-  console.log('we are connected');
+  console.log('mongo is now connected');
 });
 
 // Getting all events
 app.get('/api/events', (req, res) => {
+  console.log('requesting to get all events');
+
   
+
 })
 
 // Getting an individual event
