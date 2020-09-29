@@ -12,8 +12,8 @@ type createEventModal = {
 
 function CreateEventModal(props: createEventModal) {
 
-  const [startDate, setStartDate] = useState<any>(new Date());
-  const [endDate, setEndDate] = useState<any>(new Date());
+  const [startDateTime, setStartDateTime] = useState<Date>(new Date());
+  const [endDateTime, setEndDateTime] = useState<Date>(new Date());
 
   const [allDay, setAllDay] = useState<boolean>(false);
 
@@ -22,8 +22,8 @@ function CreateEventModal(props: createEventModal) {
   }
 
   useEffect(() => {
-    console.log(typeof startDate);
-  }, [startDate]);
+    console.log(startDateTime);
+  }, [startDateTime]);
 
   /**
    * title: String,
@@ -56,17 +56,25 @@ function CreateEventModal(props: createEventModal) {
             </Form.Group>
 
             <Form.Row>
-              <Form.Group as={Col} controlId="__startDate">
+              <Form.Group as={Col} controlId="__startDateTime">
                 <DateTimePicker
-                  onChange={setStartDate}
-                  value={startDate}
+                  onChange={setStartDateTime}
+                  value={startDateTime}
+                  disableClock={true}
+                  minDate={new Date()}
+                  clearIcon={null}
+                  calendarIcon={null}
                 />
               </Form.Group>
 
-              <Form.Group as={Col} controlId="__endDate">
+              <Form.Group as={Col} controlId="__endDateTime">
                 <DateTimePicker
-                  onChange={setEndDate}
-                  value={endDate}
+                  onChange={setEndDateTime}
+                  value={endDateTime}
+                  disableClock={true}
+                  clearIcon={null}
+                  calendarIcon={null}
+                  minDate={new Date()}
                 />
               </Form.Group>
             </Form.Row>
