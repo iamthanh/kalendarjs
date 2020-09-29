@@ -9,7 +9,6 @@ function SelectedDate(props: any) {
 
   const selectedDate: Date = new Date(props.store.selectedDate);
 
-  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   const dayOfWeekName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday','Friday', 'Saturday'];
 
   const getNth = function(d:number) : string {
@@ -30,7 +29,7 @@ function SelectedDate(props: any) {
             {dayOfWeekName[selectedDate.getDay()]}
           </div>
           <div className="date-parts">
-            <span className="month">{monthNames[selectedDate.getMonth()]}</span>&nbsp;
+            <span className="month">{selectedDate.toLocaleString('default', { month: 'long' })}</span>&nbsp;
             <span className="day-number">{selectedDate.getDate()+getNth(selectedDate.getDate())}</span>,&nbsp;
             <span className="year">{selectedDate.getFullYear()}</span>
           </div>
