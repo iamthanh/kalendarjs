@@ -12,7 +12,7 @@ function SidePanel() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
+  
   return (
     <div className="side-panel">
       <div className="header">KalendarJS</div>

@@ -3,7 +3,10 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
-import DateTimePicker from 'react-datetime-picker';
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
+import { time } from 'console';
 
 type createEventModal = {
   show: boolean,
@@ -12,8 +15,11 @@ type createEventModal = {
 
 function CreateEventModal(props: createEventModal) {
 
-  const [startDateTime, setStartDateTime] = useState<Date>(new Date());
-  const [endDateTime, setEndDateTime] = useState<Date>(new Date());
+  const [startDate, setStartDate] = useState<Date>(new Date());
+  const [endDate, setEndDate] = useState<Date>(new Date());
+
+  const [startTime, setStartTime] = useState<any>(null);
+  const [endTime, setEndTime] = useState<any>(null);
 
   const [allDay, setAllDay] = useState<boolean>(false);
 
@@ -22,16 +28,20 @@ function CreateEventModal(props: createEventModal) {
   }
 
   useEffect(() => {
-    console.log(startDateTime);
-  }, [startDateTime]);
+    console.log(startDate);
+  }, [startDate]);
 
-  /**
-   * title: String,
-    description: String,
-    startTime: String,
-    endTime: String,
-    allDay: Boolean,
-   */
+  let timeOptions: Array<JSX.Element>= [];
+  for(let hour = 0; hour < 24; hour++) {
+    for (let min = 0; min < 60; min+=15) {
+      let suffix = hour >= 12 ? 'PM': 'AM';
+      let _hour = hour >= 13 ? hour-12: hour;
+      let _min = min === 0 ? '00': min;
+      timeOptions.push(
+        <option value={hour+':'+_min}>{_hour+':'+_min+suffix}</option>
+      )
+    }
+  }
 
   return (
     <React.Fragment>
@@ -57,25 +67,29 @@ function CreateEventModal(props: createEventModal) {
 
             <Form.Row>
               <Form.Group as={Col} controlId="__startDateTime">
-                <DateTimePicker
-                  onChange={setStartDateTime}
-                  value={startDateTime}
-                  disableClock={true}
-                  minDate={new Date()}
-                  clearIcon={null}
-                  calendarIcon={null}
-                />
+                <Form.Label>Start</Form.Label>
+                <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
               </Form.Group>
 
               <Form.Group as={Col} controlId="__endDateTime">
-                <DateTimePicker
-                  onChange={setEndDateTime}
-                  value={endDateTime}
-                  disableClock={true}
-                  clearIcon={null}
-                  calendarIcon={null}
-                  minDate={new Date()}
-                />
+                <Form.Label>End</Form.Label>
+                <DatePicker selected={endDate} onChange={date => setEndDate(date)} />
+              </Form.Group>
+            </Form.Row>
+
+            <Form.Row>
+              <Form.Group as={Col} controlId="__startDateTime">
+                <Form.Label>Start time</Form.Label>
+                <Form.Control as="select">
+                  {timeOptions}
+                </Form.Control>
+              </Form.Group>
+
+              <Form.Group as={Col} controlId="__endDateTime">
+                <Form.Label>End time</Form.Label>
+                <Form.Control as="select">
+                  {timeOptions}
+                </Form.Control>
               </Form.Group>
             </Form.Row>
           </Form>
