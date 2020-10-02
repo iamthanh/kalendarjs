@@ -15,32 +15,71 @@ type createEventModal = {
 
 function CreateEventModal(props: createEventModal) {
 
-  const [startDate, setStartDate] = useState<Date>(new Date());
-  const [endDate, setEndDate] = useState<Date>(new Date());
-
-  const [startTime, setStartTime] = useState<any>(null);
-  const [endTime, setEndTime] = useState<any>(null);
+  const now = new Date();
+  const [startDateTime, setStartDateTime] = useState<Date>(now);
+  const [endDateTime, setEndDateTime] = useState<Date>(now);
 
   const [allDay, setAllDay] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (now.getMinutes() < 15) {
+      setStartDateTime(time => new Date(time.setMinutes(15)))
+      setEndDateTime(time => new Date(time.setMinutes(30)))
+    } else if (now.getMinutes() < 30) {
+      setStartDateTime(time => new Date(time.setMinutes(30)))
+      setEndDateTime(time => new Date(time.setMinutes(45)))
+    } else if (now.getMinutes() < 45) {
+      setStartDateTime(time => new Date(time.setMinutes(45)))
+      setEndDateTime(time => new Date(time.setMinutes(60)))
+    } else {
+      setStartDateTime(time => new Date(time.setMinutes(60)))
+      setEndDateTime(time => {
+        time.setMinutes(15);
+        time.setHours(time.getHours()+1);
+        return new Date(time)
+      })
+    }
+  }, [])
 
   const cancelHandler = () => {
     props.handleClose();
   }
 
-  useEffect(() => {
-    console.log(startDate);
-  }, [startDate]);
+  console.log(startDateTime)
+  console.log(endDateTime)
 
-  let timeOptions: Array<JSX.Element>= [];
-  for(let hour = 0; hour < 24; hour++) {
-    for (let min = 0; min < 60; min+=15) {
-      let suffix = hour >= 12 ? 'PM': 'AM';
-      let _hour = hour >= 13 ? hour-12: hour;
-      let _min = min === 0 ? '00': min;
+  useEffect(() => {
+    console.log(startDateTime);
+  }, [startDateTime]);
+
+  let timeOptions: Array<JSX.Element> = [];
+  for (let hour = 0; hour < 24; hour++) {
+    for (let min = 0; min < 60; min += 15) {
+      let suffix = hour >= 12 ? 'PM' : 'AM';
+
+
+      let _hour = hour >= 13 ? hour - 12 : hour;
+      let _min = min === 0 ? '00' : min;
+
+      let selected = _hour === startDateTime.getHours() && min === startDateTime.getMinutes() ? true : false;
+
       timeOptions.push(
-        <option value={hour+':'+_min}>{_hour+':'+_min+suffix}</option>
+        <option selected={selected} value={hour + ':' + _min}>{_hour + ':' + _min + suffix}</option>
       )
     }
+  }
+
+  const startTimeHandler = (time:string) => {
+    let _time = time.split(':');
+    console.log(_time);
+    setStartDateTime(time => {
+      time.setMinutes(parseInt(_time[1]));
+      time.setHours(parseInt(_time[0]));
+
+      console.log(time);
+
+      return new Date(time)
+    })
   }
 
   return (
@@ -51,7 +90,7 @@ function CreateEventModal(props: createEventModal) {
         backdrop="static"
         keyboard={false}
       >
-        <Modal.Header closeButton>
+        <Modal.Header closeButton={false}>
           <Modal.Title>Create event</Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -68,26 +107,26 @@ function CreateEventModal(props: createEventModal) {
             <Form.Row>
               <Form.Group as={Col} controlId="__startDateTime">
                 <Form.Label>Start</Form.Label>
-                <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
+                <DatePicker selected={startDateTime} onChange={date => setStartDateTime(date)} />
               </Form.Group>
 
               <Form.Group as={Col} controlId="__endDateTime">
                 <Form.Label>End</Form.Label>
-                <DatePicker selected={endDate} onChange={date => setEndDate(date)} />
+                <DatePicker selected={endDateTime} onChange={date => setEndDateTime(date)} />
               </Form.Group>
             </Form.Row>
 
             <Form.Row>
               <Form.Group as={Col} controlId="__startDateTime">
                 <Form.Label>Start time</Form.Label>
-                <Form.Control as="select">
+                <Form.Control size="sm" as="select" value={startDateTime.getHours() + ':' + startDateTime.getMinutes()} onChange={e => startTimeHandler(e.target.value)}>
                   {timeOptions}
                 </Form.Control>
               </Form.Group>
 
               <Form.Group as={Col} controlId="__endDateTime">
                 <Form.Label>End time</Form.Label>
-                <Form.Control as="select">
+                <Form.Control size="sm" as="select" value={endDateTime.getHours() + ':' + endDateTime.getMinutes()}>
                   {timeOptions}
                 </Form.Control>
               </Form.Group>
