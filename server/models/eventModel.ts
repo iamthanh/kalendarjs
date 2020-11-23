@@ -5,11 +5,15 @@ const eventSchema = new mongoose.Schema({
     created: String,
     title: String,
     description: String,
-    startTime: String,
-    endTime: String,
+    startDateTime: String,
+    endDateTime: String,
     allDay: Boolean,
     members: Array
 });
+
+eventSchema.methods.verify = (data) => {
+    return true;
+}
 
 export default mongoose.model('Event', eventSchema);
 

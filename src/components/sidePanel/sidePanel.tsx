@@ -1,0 +1,38 @@
+import React, { useState } from 'react';
+import './sidePanel.scss';
+import Button from 'react-bootstrap/Button';
+import SelectedDate from './selectedDate/selectedDate';
+import EventListing from './eventListing/eventListing';
+import CreateEventModal from './createEvent/createEventModal';
+
+function SidePanel() {
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const handleNewEventSuccess = (newEvent) => {
+    console.log('event created successfully');
+    setShow(false);
+  }
+  
+  return (
+    <div className="side-panel">
+      <div className="header">KalendarJS</div>
+      <SelectedDate />
+      <div className=''>
+        <Button variant="primary" onClick={handleShow}>Create event</Button>
+      </div>
+      <EventListing />
+      
+      <CreateEventModal 
+        show={show}
+        handleNewEventSuccess={handleNewEventSuccess}
+        handleClose={handleClose}
+      />
+    </div>
+  );
+}
+
+export default SidePanel;

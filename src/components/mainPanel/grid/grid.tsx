@@ -23,7 +23,7 @@ function Grid() {
     const generateWeeks = (): Array<JSX.Element> => {
 
       let i: number = 0;
-      let _weeks = [];
+      let _weeks: Array<JSX.Element>= [];
 
       // We start out with building the current week
       let currentDate = new Date();
