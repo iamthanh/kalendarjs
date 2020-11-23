@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import './sidePanel.scss';
-import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import SelectedDate from './selectedDate/selectedDate';
 import EventListing from './eventListing/eventListing';
@@ -12,6 +11,11 @@ function SidePanel() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const handleNewEventSuccess = (newEvent) => {
+    console.log('event created successfully');
+    setShow(false);
+  }
   
   return (
     <div className="side-panel">
@@ -24,6 +28,7 @@ function SidePanel() {
       
       <CreateEventModal 
         show={show}
+        handleNewEventSuccess={handleNewEventSuccess}
         handleClose={handleClose}
       />
     </div>

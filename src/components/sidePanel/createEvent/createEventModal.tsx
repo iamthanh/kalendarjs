@@ -5,64 +5,26 @@ import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import DatePicker from "react-datepicker";
 import TimePicker from 'react-time-picker';
+import Api from './../../../services/api';
 
 import "react-datepicker/dist/react-datepicker.css";
 
 type createEventModal = {
   show: boolean,
+  handleNewEventSuccess: Function,
   handleClose: Function
 }
 
 function CreateEventModal(props: createEventModal) {
 
-  // const nowStart = new Date();
-  // now.setMinutes(1);
-
-
-
-
-  // console.log('now: ' + now);
-
   const [startDateTime, setStartDateTime] = useState<Date>(new Date());
   const [endDateTime, setEndDateTime] = useState<Date>(new Date());
-
   const [allDay, setAllDay] = useState<boolean>(false);
 
-  useEffect(() => {
+  const [title, setTitle] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
 
-    // setStartDateTime(time => new Date(time.setMinutes(30)))
-
-    // if (startDateTime.getMinutes() < 15) {
-    //   setStartDateTime(time => new Date(time.setMinutes(15)))
-    //   setEndDateTime(time => new Date(time.setMinutes(30)))
-    // } else if (startDateTime.getMinutes() < 30) {
-    //   setStartDateTime(time => new Date(time.setMinutes(30)))
-    //   setEndDateTime(time => new Date(time.setMinutes(45)))
-    // } else if (startDateTime.getMinutes() < 45) {
-    //   setStartDateTime(time => new Date(time.setMinutes(45)))
-    //   setEndDateTime(time => {
-    //     time.setMinutes(startDateTime.getMinutes()+15);
-    //     // time.setHours(time.getHours());
-    //     return new Date(time)
-    //   })
-    // } else {
-    //   setStartDateTime(time => new Date(time.setMinutes(60)))
-    //   setEndDateTime(time => new Date(time.setMinutes(15)))
-    // }
-
-    // Setting the inital start and end times
-    // setInitalTimes();
-  }, [])
-
-  const setInitalTimes = () => {
-
-    // console.log(now);
-
-    // setStartTime(now.getHours() + ':' + now.getMinutes());
-
-    // console.log(now.getMinutes());
-    // setEndTime(now.getHours())
-  }
+  const [validated, setValidated] = useState<boolean>(false);
 
   const cancelHandler = () => {
     props.handleClose();
@@ -79,23 +41,32 @@ function CreateEventModal(props: createEventModal) {
     })
   }
 
-  // const endTimeHandler = (time: string) => {
-  //   let _time = time.split(':');
-  //   setEndDateTime(time => {
-  //     time.setMinutes(parseInt(_time[1]));
-  //     time.setHours(parseInt(_time[0]));
+  const submitHandler = (event) => {
 
-  //     // console.log?
-  //     return new Date(time)
-  //   })
-  // }
+    event.preventDefault();
+    event.stopPropagation();
 
-  const submitHandler = () => {
-    console.log({
+    let data = {
+      'title': title,
+      'description': description,
       'startDateTime': startDateTime,
-      'endDateTime':endDateTime,
+      'endDateTime': endDateTime,
       'allDay': allDay
-    })
+    }
+
+    Api.createNewEvent(data).then((results) => {
+      if (results.status) {
+        props.handleNewEventSuccess(results.data);
+      } else {
+        // Handle error within the modal
+      }
+    });
+  }
+
+  const inputHandler = (event, setter) => {
+    if (event.target.value.length) {
+      setter(event.target.value);
+    }
   }
 
   return (
@@ -105,18 +76,22 @@ function CreateEventModal(props: createEventModal) {
       backdrop="static"
       keyboard={false}
     >
-      <Modal.Header closeButton={false}>
-        <Modal.Title>Create event</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
+      <Form onSubmit={submitHandler}>
 
-        <Form>
+        <Modal.Header closeButton={false}>
+          <Modal.Title>Create event</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+
           <Form.Group controlId="__title">
-            <Form.Control size="sm" type="text" placeholder="Enter the title" />
+            <Form.Control size="sm" type="text" placeholder="Enter the title" required onChange={e=>inputHandler(e, setTitle)} />
+            <Form.Control.Feedback type="invalid">
+              Please provide a title
+            </Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group controlId="__description">
-            <Form.Control as="textarea" rows={4} placeholder="Description" />
+            <Form.Control size="sm" as="textarea" rows={4} placeholder="Description" onChange={e=>inputHandler(e, setDescription)} />
           </Form.Group>
 
           <Form.Row>
@@ -160,13 +135,12 @@ function CreateEventModal(props: createEventModal) {
               </Form.Group>
             </Form.Row>
           )}
-
-        </Form>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={() => cancelHandler()}>Cancel</Button>
-        <Button variant="primary" onClick={submitHandler}>Create</Button>
-      </Modal.Footer>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => cancelHandler()}>Cancel</Button>
+          <Button variant="primary" type='submit'>Create</Button>
+        </Modal.Footer>
+      </Form>
     </Modal>
   );
 }
