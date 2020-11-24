@@ -34,15 +34,20 @@ function EventListing(props: any) {
     }
   }, [props.store]);
 
+  // let hourChart : Array<JSX.Element> = [];
+  // for (let i = 0; i < 24; i++) {
+    
+  // }
+
   return (
     <div className='event-listing-container'>
-      {events.length && (
+      {events.length > 0 && 
         <ul>
           {events.map((event, i) => 
             <li>{event.title}</li>
           )}
         </ul>
-      )}
+      }
     </div>
   );
 }
