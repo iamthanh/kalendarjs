@@ -1,14 +1,9 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
-type DayProps = {
-  store: any
-}
-
 function SelectedDate(props: any) {
 
   const selectedDate: Date = new Date(props.store.selectedDate);
-
   const dayOfWeekName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday','Friday', 'Saturday'];
 
   const getNth = function(d:number) : string {

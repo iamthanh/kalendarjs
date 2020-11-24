@@ -15,6 +15,9 @@ function SidePanel() {
   const handleNewEventSuccess = (newEvent) => {
     console.log('event created successfully');
     setShow(false);
+
+    // Also update the new event locally
+    
   }
   
   return (

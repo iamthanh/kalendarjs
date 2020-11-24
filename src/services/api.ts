@@ -10,22 +10,24 @@ interface newEvent {
 
 const Api = {
 
+    getEvents: async () => {
+        let results = await axios.get('http://localhost:8080/api/events').then((res) => {
+            if (res && res.data && res.status < 400) {
+                return res.data;
+            } else {
+                return {status: false, message: 'Failed to fetch events'}
+            }
+        }).catch((err) => {return {status: false, error: err}})
+        return results;
+    },
     createNewEvent: async (data: newEvent) => {
         let results = await axios.post('http://localhost:8080/api/event', data).then((res) => {
             if (res && res.data && res.status < 400) {
                 return res.data;
             } else {
-                return {
-                    status: false,
-                    message: 'Failed to create new Event'
-                }
+                return {status: false, message: 'Failed to create new Event'}
             }
-        }).catch((err) => {
-            return {
-                status: false,
-                error: err
-            }
-        })
+        }).catch((err) => {return {status: false, error: err}})
         return results;
     }
 }
