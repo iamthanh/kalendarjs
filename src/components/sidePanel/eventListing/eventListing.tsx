@@ -44,7 +44,7 @@ function EventListing(props: any) {
       {events.length > 0 && 
         <ul>
           {events.map((event, i) => 
-            <li>{event.title}</li>
+            <li key={i}>{event.title}</li>
           )}
         </ul>
       }

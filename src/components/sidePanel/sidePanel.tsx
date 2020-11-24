@@ -4,6 +4,8 @@ import Button from 'react-bootstrap/Button';
 import SelectedDate from './selectedDate/selectedDate';
 import EventListing from './eventListing/eventListing';
 import CreateEventModal from './createEvent/createEventModal';
+import { store } from './../../store';
+import { addEvent } from './../../actions/userEvents';
 
 function SidePanel() {
 
@@ -17,7 +19,7 @@ function SidePanel() {
     setShow(false);
 
     // Also update the new event locally
-    
+    store.dispatch(addEvent(newEvent));
   }
   
   return (

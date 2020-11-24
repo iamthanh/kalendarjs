@@ -6,7 +6,7 @@ const Events = (props:any) => {
       {props.events.length > 0 && 
         <ul>
           {props.events.map((event, i)=> 
-            <li>{event.title}</li>
+            <li key={i}>{event.title}</li>
           )}
         </ul>
       }

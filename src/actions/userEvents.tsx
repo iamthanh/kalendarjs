@@ -4,3 +4,10 @@ export const setUserEvents = (events: any) => {
     payload: events 
   }
 }
+
+export const addEvent = (event: any) => {
+  return {
+    type: 'userEvents/add',
+    payload: event
+  }
+}
