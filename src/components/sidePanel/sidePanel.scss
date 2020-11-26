@@ -1,5 +1,7 @@
 .side-panel {
   flex: 1;
-  max-width: 350px;
+  max-width: 250px;
+  height: 100vh;
+  overflow-y: auto;
   border-right: 1px solid #d5d5d5;
 }

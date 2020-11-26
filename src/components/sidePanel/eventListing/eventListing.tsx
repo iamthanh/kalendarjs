@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import './eventListing.scss';
 
 function EventListing(props: any) {
 
@@ -7,7 +8,7 @@ function EventListing(props: any) {
 
   useEffect(() => {
 
-    const checkEventDaySame = (date:Date) => {
+    const checkEventDaySame = (date: Date) => {
       return (
         date.getDate() === props.store.selectedDate.getDate() &&
         date.getMonth() === props.store.selectedDate.getMonth() &&
@@ -16,9 +17,9 @@ function EventListing(props: any) {
     }
 
     if (props.store.userEvents) {
-      let eventsToAdd:any[] = [];
+      let eventsToAdd: any[] = [];
 
-      for(let i = 0; i < props.store.userEvents.length; i++) {
+      for (let i = 0; i < props.store.userEvents.length; i++) {
         let _event = props.store.userEvents[i];
         let startDateTime = new Date(_event.startDateTime);
 
@@ -34,16 +35,28 @@ function EventListing(props: any) {
     }
   }, [props.store]);
 
-  // let hourChart : Array<JSX.Element> = [];
-  // for (let i = 0; i < 24; i++) {
+  let hourChart: Array<JSX.Element> = [];
+  for (let i = 0; i < 24; i++) {
     
-  // }
+    let hour = i+'am';
+    if (i === 0) hour = '12am'
+    else if (i === 12) hour = '12pm';
+    else if (i > 12) hour = (i-12)+'pm'
+    
+    hourChart.push(
+      <div className='hour-chart'>
+        <div className='hour-indicator'>{hour}</div>
+      </div>
+    )
+  }
 
   return (
     <div className='event-listing-container'>
-      {events.length > 0 && 
+      {hourChart.length > 0 && hourChart}
+
+      {events.length > 0 &&
         <ul>
-          {events.map((event, i) => 
+          {events.map((event, i) =>
             <li key={i}>{event.title}</li>
           )}
         </ul>

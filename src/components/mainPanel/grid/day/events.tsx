@@ -4,9 +4,9 @@ const Events = (props:any) => {
   return (
     <div className='events-in-day'>
       {props.events.length > 0 && 
-        <ul>
+        <ul className='events-container'>
           {props.events.map((event, i)=> 
-            <li key={i}>{event.title}</li>
+            <li className='event bg-primary text-white' key={i}>{event.title}</li>
           )}
         </ul>
       }

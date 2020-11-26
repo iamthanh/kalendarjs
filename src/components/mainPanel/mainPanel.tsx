@@ -1,6 +1,7 @@
 import React from 'react';
 import Grid from './grid/grid';
 import { connect } from 'react-redux'
+import './mainPanel.scss';
 
 const MainPanel = () => {
   return (

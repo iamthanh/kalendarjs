@@ -43,4 +43,19 @@
       background: #f2f2f2;
     }
   }
+
+  .events-in-day {
+    .events-container {
+      margin: 0;
+      padding: 0;
+
+      .event {
+        padding: 0 10px;
+        font-size: 14px;
+        list-style-type: none;
+        margin-bottom: 3px;
+      }
+      
+    }
+  }
 }
