@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import Event from './event';
 import './eventListing.scss';
 
 function EventListing(props: any) {
@@ -28,39 +29,36 @@ function EventListing(props: any) {
         }
       }
       setEvents(eventsToAdd);
-    }
 
-    if (props.store.selectedDate) {
-      // Using the selected date to display events  
+      console.log(eventsToAdd);
     }
   }, [props.store]);
 
-  let hourChart: Array<JSX.Element> = [];
-  for (let i = 0; i < 24; i++) {
-    
-    let hour = i+'am';
-    if (i === 0) hour = '12am'
-    else if (i === 12) hour = '12pm';
-    else if (i > 12) hour = (i-12)+'pm'
-    
-    hourChart.push(
-      <div className='hour-chart'>
-        <div className='hour-indicator'>{hour}</div>
-      </div>
-    )
+  const generateHourChart = () => {
+    let hourChart: Array<JSX.Element> = [];
+    let hourChartRefsToAdd: Object = {};
+    for (let i: number = 0; i < 24; i++) {
+
+      let hour = i + 'am';
+      if (i === 0) hour = '12am'
+      else if (i === 12) hour = '12pm';
+      else if (i > 12) hour = (i - 12) + 'pm';
+
+      hourChartRefsToAdd[i] = React.createRef();
+
+      hourChart.push(
+        <div ref={hourChartRefsToAdd[i]} key={i} className='hour-chart'>
+          <div className='hour-indicator'>{hour}</div>
+        </div>
+      )
+    }
   }
 
   return (
     <div className='event-listing-container'>
-      {hourChart.length > 0 && hourChart}
-
-      {events.length > 0 &&
-        <ul>
-          {events.map((event, i) =>
-            <li key={i}>{event.title}</li>
-          )}
-        </ul>
-      }
+      {events.length > 0 && events.map((event, i) =>
+        <Event {...event} />
+      )}
     </div>
   );
 }

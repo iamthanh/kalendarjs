@@ -42,13 +42,12 @@ function CreateEventModal(props: createEventModal) {
   }
 
   const submitHandler = (event) => {
-
     event.preventDefault();
     event.stopPropagation();
 
     let data = {
-      'title': title,
-      'description': description,
+      'title': title.trim(),
+      'description': description.trim(),
       'startDateTime': startDateTime,
       'endDateTime': endDateTime,
       'allDay': allDay
