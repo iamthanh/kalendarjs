@@ -21,17 +21,19 @@ function SidePanel() {
     // Also update the new event locally
     store.dispatch(addEvent(newEvent));
   }
-  
+
   return (
     <div className="side-panel">
-      <div className="header">KalendarJS</div>
-      <SelectedDate />
-      <div className=''>
-        <Button variant="primary" onClick={handleShow}>Create event</Button>
+      <div className="header">
+        <div className="logo">KalendarJS</div>
+        <SelectedDate />
+        <div className='create-event-button-container'>
+          <Button size="sm" variant="outline-primary" onClick={handleShow}>Create event</Button>
+        </div>
       </div>
       <EventListing />
-      
-      <CreateEventModal 
+
+      <CreateEventModal
         show={show}
         handleNewEventSuccess={handleNewEventSuccess}
         handleClose={handleClose}

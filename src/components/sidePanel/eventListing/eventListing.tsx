@@ -29,8 +29,6 @@ function EventListing(props: any) {
         }
       }
       setEvents(eventsToAdd);
-
-      console.log(eventsToAdd);
     }
   }, [props.store]);
 
@@ -57,7 +55,7 @@ function EventListing(props: any) {
   return (
     <div className='event-listing-container'>
       {events.length > 0 && events.map((event, i) =>
-        <Event {...event} />
+        <Event key={i} {...event} />
       )}
     </div>
   );

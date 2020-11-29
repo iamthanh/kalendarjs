@@ -4,4 +4,23 @@
   height: 100vh;
   overflow-y: auto;
   border-right: 1px solid #d5d5d5;
+
+  .header {
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 12px;
+
+    .selected-date-container {
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+  
+    .create-event-button-container {
+      button {
+        width: 100%;
+      }
+    }
+  }
 }
