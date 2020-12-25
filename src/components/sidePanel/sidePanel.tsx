@@ -3,7 +3,7 @@ import './sidePanel.scss';
 import Button from 'react-bootstrap/Button';
 import SelectedDate from './selectedDate/selectedDate';
 import EventListing from './eventListing/eventListing';
-import CreateEventModal from './createEvent/createEventModal';
+import EventInstanceModal from './EventModal/EventInstanceModal';
 import { store } from './../../store';
 import { addEvent } from './../../actions/userEvents';
 
@@ -15,7 +15,6 @@ function SidePanel() {
   const handleShow = () => setShow(true);
 
   const handleNewEventSuccess = (newEvent) => {
-    console.log('event created successfully');
     setShow(false);
 
     // Also update the new event locally
@@ -33,8 +32,9 @@ function SidePanel() {
       </div>
       <EventListing />
 
-      <CreateEventModal
+      <EventInstanceModal
         show={show}
+        type='create'
         handleNewEventSuccess={handleNewEventSuccess}
         handleClose={handleClose}
       />

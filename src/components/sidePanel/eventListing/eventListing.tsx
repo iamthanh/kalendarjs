@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Event from './event';
+import EventInstanceModal from './../EventModal/EventInstanceModal';
 import './eventListing.scss';
 
 function EventListing(props: any) {
 
   const [events, setEvents] = useState<any[]>([]);
+
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   useEffect(() => {
 
@@ -52,11 +57,21 @@ function EventListing(props: any) {
     }
   }
 
+  const eventClickHandler = (event) => {
+    setShow(true);
+  }
+
   return (
     <div className='event-listing-container'>
       {events.length > 0 && events.map((event, i) =>
-        <Event key={i} {...event} />
+        <Event clickHandler={eventClickHandler} key={i} {...event} />
       )}
+      <EventInstanceModal
+        show={show}
+        type='edit'
+        handleNewEventSuccess={()=>{}}
+        handleClose={handleClose}
+      />
     </div>
   );
 }

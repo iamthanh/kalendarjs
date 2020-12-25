@@ -15,6 +15,11 @@
         font-size: 14px;
         border-left: 3px solid #007bff;
         padding: 8px;
+        
+        &:hover {
+            background: #f1f1f1;
+            cursor: pointer;
+        }
 
         &.expired {
             border-left-color: #808080;

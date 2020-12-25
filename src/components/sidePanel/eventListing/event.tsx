@@ -5,6 +5,7 @@ type eventProps = {
   description: string,
   startDateTime: Date,
   endDateTime: Date
+  clickHandler: Function
 }
 
 const Event = (props: eventProps) => {
@@ -34,9 +35,9 @@ const Event = (props: eventProps) => {
     }
     return false;
   }
-
+  
   return (
-    <div className={'event ' + (hasEventExpired(new Date(props.startDateTime)) ? 'expired' : '')}>
+    <div className={'event ' + (hasEventExpired(new Date(props.startDateTime)) ? 'expired' : '')} onClick={()=>props.clickHandler()}>
       <div className='time'>{getReadableTime(new Date(props.startDateTime))}</div>
       <div className='title'>{props.title}</div>
       <div className='desciption'>

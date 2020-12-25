@@ -1,22 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import DatePicker from "react-datepicker";
 import TimePicker from 'react-time-picker';
-import Api from './../../../services/api';
+import Api from '../../../services/api';
 import Alert from 'react-bootstrap/Alert'
 
 import "react-datepicker/dist/react-datepicker.css";
 
-type createEventModal = {
+type EventInstanceModalProps = {
   show: boolean,
+  type: string,
   handleNewEventSuccess: Function,
   handleClose: Function
 }
 
-function CreateEventModal(props: createEventModal) {
+const MODAL_TYPE_CREATE = 'create';
+const MODAL_TYPE_EDIT = 'edit';
+
+type ModalTypes = typeof MODAL_TYPE_CREATE | typeof MODAL_TYPE_EDIT;
+
+function EventInstanceModal(props: EventInstanceModalProps) {
+
+  const [modalType, setModalType] = useState<ModalTypes>(MODAL_TYPE_CREATE);
 
   const [startDateTime, setStartDateTime] = useState<Date>(new Date());
   const [endDateTime, setEndDateTime] = useState<Date>(new Date());
@@ -156,4 +164,4 @@ function CreateEventModal(props: createEventModal) {
   );
 }
 
-export default CreateEventModal;
+export default EventInstanceModal;
