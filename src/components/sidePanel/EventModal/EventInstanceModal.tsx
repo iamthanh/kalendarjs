@@ -20,11 +20,9 @@ type EventInstanceModalProps = {
 const MODAL_TYPE_CREATE = 'create';
 const MODAL_TYPE_EDIT = 'edit';
 
-type ModalTypes = typeof MODAL_TYPE_CREATE | typeof MODAL_TYPE_EDIT;
-
 function EventInstanceModal(props: EventInstanceModalProps) {
 
-  const [modalType, setModalType] = useState<ModalTypes>(MODAL_TYPE_CREATE);
+  const [modalType, setModalType] = useState<string>(MODAL_TYPE_CREATE);
 
   const [startDateTime, setStartDateTime] = useState<Date>(new Date());
   const [endDateTime, setEndDateTime] = useState<Date>(new Date());
@@ -34,6 +32,9 @@ function EventInstanceModal(props: EventInstanceModalProps) {
   const [description, setDescription] = useState<string>('');
   const [hasError, setHasError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
+
+  // Init, setting up the modal type
+  useEffect(() => { setModalType(props.type) },[])
 
   const cancelHandler = () => {
     props.handleClose();
@@ -92,7 +93,9 @@ function EventInstanceModal(props: EventInstanceModalProps) {
       <Form onSubmit={submitHandler}>
 
         <Modal.Header closeButton={false}>
-          <Modal.Title>Create event</Modal.Title>
+          <Modal.Title>
+            {modalType === MODAL_TYPE_CREATE ? 'Create event' : 'Edit event'}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
 
