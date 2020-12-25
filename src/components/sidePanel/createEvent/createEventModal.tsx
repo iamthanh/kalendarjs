@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -6,6 +6,7 @@ import Col from 'react-bootstrap/Col';
 import DatePicker from "react-datepicker";
 import TimePicker from 'react-time-picker';
 import Api from './../../../services/api';
+import Alert from 'react-bootstrap/Alert'
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -23,8 +24,8 @@ function CreateEventModal(props: createEventModal) {
 
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
-
-  const [validated, setValidated] = useState<boolean>(false);
+  const [hasError, setHasError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const cancelHandler = () => {
     props.handleClose();
@@ -54,10 +55,15 @@ function CreateEventModal(props: createEventModal) {
     }
 
     Api.createNewEvent(data).then((results) => {
+      setHasError(false);
+      setErrorMessage('');
+
       if (results.status) {
         props.handleNewEventSuccess(results.data);
       } else {
         // Handle error within the modal
+        setHasError(true);
+        setErrorMessage(results?.error?.message);
       }
     });
   }
@@ -83,14 +89,14 @@ function CreateEventModal(props: createEventModal) {
         <Modal.Body>
 
           <Form.Group controlId="__title">
-            <Form.Control size="sm" type="text" placeholder="Enter the title" required onChange={e=>inputHandler(e, setTitle)} />
+            <Form.Control size="sm" type="text" placeholder="Enter the title" required onChange={e => inputHandler(e, setTitle)} />
             <Form.Control.Feedback type="invalid">
               Please provide a title
             </Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group controlId="__description">
-            <Form.Control size="sm" as="textarea" rows={4} placeholder="Description" onChange={e=>inputHandler(e, setDescription)} />
+            <Form.Control size="sm" as="textarea" rows={4} placeholder="Description" onChange={e => inputHandler(e, setDescription)} />
           </Form.Group>
 
           <Form.Row>
@@ -133,6 +139,12 @@ function CreateEventModal(props: createEventModal) {
                 />
               </Form.Group>
             </Form.Row>
+          )}
+
+          {hasError && (
+            <Alert variant={'danger'}>
+              Failed to create event {errorMessage? ': '+errorMessage : ''}
+            </Alert>
           )}
         </Modal.Body>
         <Modal.Footer>
