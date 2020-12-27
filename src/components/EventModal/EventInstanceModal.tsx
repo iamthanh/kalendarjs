@@ -1,28 +1,36 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, MouseEvent, ChangeEvent } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import DatePicker from "react-datepicker";
 import TimePicker from 'react-time-picker';
-import Api from '../../../services/api';
+import Api from './../../services/api';
 import Alert from 'react-bootstrap/Alert'
-
 import "react-datepicker/dist/react-datepicker.css";
 
-type EventInstanceModalProps = {
+interface eventDataInterface {
+  title: string,
+  description: string,
+  startDateTime: string
+  endDateTime: string,
+  allDay: boolean
+}
+
+interface EventInstanceModalProps {
   show: boolean,
   type: string,
   handleNewEventSuccess: Function,
-  handleClose: Function
+  handleClose: Function,
+  eventData?: any
 }
 
 const MODAL_TYPE_CREATE = 'create';
 const MODAL_TYPE_EDIT = 'edit';
+const MODAL_VALID_TYPES = [MODAL_TYPE_CREATE, MODAL_TYPE_EDIT];
 
 function EventInstanceModal(props: EventInstanceModalProps) {
-
-  const [modalType, setModalType] = useState<string>(MODAL_TYPE_CREATE);
+  const [modalType, setModalType] = useState<string | null>(null);
 
   const [startDateTime, setStartDateTime] = useState<Date>(new Date());
   const [endDateTime, setEndDateTime] = useState<Date>(new Date());
@@ -34,21 +42,28 @@ function EventInstanceModal(props: EventInstanceModalProps) {
   const [errorMessage, setErrorMessage] = useState<string>('');
 
   // Init, setting up the modal type
-  useEffect(() => { setModalType(props.type) },[])
+  useEffect(() => {
+    if (MODAL_VALID_TYPES.includes(props?.type)) {
+      setModalType(props.type);
+    } else {
+      // modal has invalid type passed in
+      console.error('Failed to instantiate EventInstanceModal', 'Invalid modal type')
+    }
+  }, [])
+
+  // Init, checking if editing and existing event data is being passed in
+  useEffect(() => {
+    if (modalType === MODAL_TYPE_EDIT && props.eventData) {
+      setTitle(props.eventData.title);
+      setDescription(props.eventData.description);
+      setStartDateTime(new Date(props.eventData.startDateTime));
+      setEndDateTime(new Date(props.eventData.endDateTime));
+      setAllDay(props.eventData.allDay)
+    }
+  }, [modalType, props?.eventData?._id]);
 
   const cancelHandler = () => {
     props.handleClose();
-  }
-
-  const setTimeHandler = (setter, time: string) => {
-    let _time = time.split(':');
-
-    // Update the start time to the selected time
-    setter(time => {
-      time.setMinutes(parseInt(_time[1]));
-      time.setHours(parseInt(_time[0]));
-      return new Date(time)
-    })
   }
 
   const submitHandler = (event) => {
@@ -77,12 +92,23 @@ function EventInstanceModal(props: EventInstanceModalProps) {
     });
   }
 
-  const inputHandler = (event, setter) => {
-    if (event.target.value.length) {
-      setter(event.target.value);
+  const inputHandler = (setter: Function, inputEvent) => {
+    if (inputEvent.currentTarget.value.length) {
+      setter(inputEvent.currentTarget.value);
     }
   }
 
+  const setTimeHandler = (setter:Function, time: string) => {
+    let _time = time.split(':');
+
+    // Update the start time to the selected time
+    setter(time => {
+      time.setMinutes(parseInt(_time[1]));
+      time.setHours(parseInt(_time[0]));
+      return new Date(time)
+    })
+  }
+  
   return (
     <Modal
       show={props.show}
@@ -100,14 +126,14 @@ function EventInstanceModal(props: EventInstanceModalProps) {
         <Modal.Body>
 
           <Form.Group controlId="__title">
-            <Form.Control size="sm" type="text" placeholder="Enter the title" required onChange={e => inputHandler(e, setTitle)} />
+            <Form.Control value={title} size="sm" type="text" placeholder="Enter the title" required onChange={e => inputHandler(setTitle, e)} />
             <Form.Control.Feedback type="invalid">
               Please provide a title
             </Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group controlId="__description">
-            <Form.Control size="sm" as="textarea" rows={4} placeholder="Description" onChange={e => inputHandler(e, setDescription)} />
+            <Form.Control value={description} size="sm" as="textarea" rows={4} placeholder="Description" onChange={e => inputHandler(setDescription, e)} />
           </Form.Group>
 
           <Form.Row>
@@ -154,17 +180,18 @@ function EventInstanceModal(props: EventInstanceModalProps) {
 
           {hasError && (
             <Alert variant={'danger'}>
-              Failed to create event {errorMessage? ': '+errorMessage : ''}
+              Failed to create event {errorMessage ? ': ' + errorMessage : ''}
             </Alert>
           )}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => cancelHandler()}>Cancel</Button>
-          <Button variant="primary" type='submit'>Create</Button>
+          <Button variant="primary" type='submit'>{modalType === MODAL_TYPE_CREATE ? 'Create' : 'Update'}</Button>
         </Modal.Footer>
       </Form>
     </Modal>
   );
 }
 
-export default EventInstanceModal;
+const MemoizedEventInstanceModal = React.memo(EventInstanceModal);
+export default MemoizedEventInstanceModal

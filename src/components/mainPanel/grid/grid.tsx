@@ -6,15 +6,9 @@ import GridHeader from './gridHeader/gridHeader';
 
 function Grid() {
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [renderedWeeks, setRenderedWeeks] = useState<JSX.Element[]>([]);
-
-  const [preloadMonthsBefore, setPreloadMonthsBefore] = useState<number>(1);
-  const [preloadMonthsAfter, setPreloadMonthsAfter] = useState<number>(1);
-
   const [selectedDate, setSelectedDate] = useState(new Date());
 
-  let weeksGenerated: any = [];
   let maxInitWeeks = 9;
 
   const startingDayOfWeek = 1; // Monday, 0 is Sunday

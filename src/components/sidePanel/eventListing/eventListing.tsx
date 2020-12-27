@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Event from './event';
-import EventInstanceModal from './../EventModal/EventInstanceModal';
+import EventInstanceModal from '../../EventModal/EventInstanceModal';
 import './eventListing.scss';
 
 function EventListing(props: any) {
-
   const [events, setEvents] = useState<any[]>([]);
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const [editEventObj, setEditEventObj] = useState<Object | null>(null);
 
   useEffect(() => {
 
@@ -37,41 +38,27 @@ function EventListing(props: any) {
     }
   }, [props.store]);
 
-  const generateHourChart = () => {
-    let hourChart: Array<JSX.Element> = [];
-    let hourChartRefsToAdd: Object = {};
-    for (let i: number = 0; i < 24; i++) {
-
-      let hour = i + 'am';
-      if (i === 0) hour = '12am'
-      else if (i === 12) hour = '12pm';
-      else if (i > 12) hour = (i - 12) + 'pm';
-
-      hourChartRefsToAdd[i] = React.createRef();
-
-      hourChart.push(
-        <div ref={hourChartRefsToAdd[i]} key={i} className='hour-chart'>
-          <div className='hour-indicator'>{hour}</div>
-        </div>
-      )
-    }
-  }
-
   const eventClickHandler = (event) => {
+    setEditEventObj(event);
     setShow(true);
   }
 
   return (
     <div className='event-listing-container'>
       {events.length > 0 && events.map((event, i) =>
-        <Event clickHandler={eventClickHandler} key={i} {...event} />
+        <Event clickHandler={() => eventClickHandler(event)} key={i} {...event} />
       )}
-      <EventInstanceModal
-        show={show}
-        type='edit'
-        handleNewEventSuccess={()=>{}}
-        handleClose={handleClose}
-      />
+
+      {editEventObj && (
+        <EventInstanceModal
+          show={show}
+          type='edit'
+          handleNewEventSuccess={() => { }}
+          handleClose={handleClose}
+          eventData={editEventObj}
+        />
+      )}
+
     </div>
   );
 }

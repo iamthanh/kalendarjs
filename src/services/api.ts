@@ -1,11 +1,15 @@
 import axios from 'axios';
 
-interface newEvent {
+interface event {
     'title': string,
     'description': string,
     'startDateTime': Date,
     'endDateTime': Date,
     'allDay': boolean
+}
+
+interface existingEvent extends event {
+    'mongoId': string 
 }
 
 const Api = {
@@ -20,12 +24,22 @@ const Api = {
         }).catch((err) => {return {status: false, error: err}})
         return results;
     },
-    createNewEvent: async (data: newEvent) => {
+    createNewEvent: async (data: event) => {
         let results = await axios.post('http://localhost:8080/api/event', data).then((res) => {
             if (res && res.data && res.status < 400) {
                 return res.data;
             } else {
-                return {status: false, message: 'Failed to create new Event'}
+                return {status: false, message: 'Failed to create new event'}
+            }
+        }).catch((err) => {return {status: false, error: err}})
+        return results;
+    },
+    updateEvent: async (data: existingEvent) => {
+        let results = await axios.put('http://localhost:8080/api/event', data).then((res) => {
+            if (res && res.data && res.status < 400) {
+                return res.data;
+            } else {
+                return {status: false, message: 'Failed to update event'}
             }
         }).catch((err) => {return {status: false, error: err}})
         return results;
