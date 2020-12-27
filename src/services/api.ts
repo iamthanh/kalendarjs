@@ -9,7 +9,7 @@ interface event {
 }
 
 interface existingEvent extends event {
-    'mongoId': string 
+    'id': string 
 }
 
 const Api = {

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Event from './event';
 import EventInstanceModal from '../../EventModal/EventInstanceModal';
+import { UpdateOneEvent } from '../../../actions/Event.actions';
+import { store } from './../../../store';
 import './eventListing.scss';
 
 function EventListing(props: any) {
@@ -43,6 +45,15 @@ function EventListing(props: any) {
     setShow(true);
   }
 
+  const handleSubmitSuccess = (updatedEvent) => {
+    setShow(false);
+
+    // Also update the new event locally
+    store.dispatch(UpdateOneEvent(updatedEvent));
+
+    // Need to update locally to get the changes
+  }
+
   return (
     <div className='event-listing-container'>
       {events.length > 0 && events.map((event, i) =>
@@ -53,7 +64,7 @@ function EventListing(props: any) {
         <EventInstanceModal
           show={show}
           type='edit'
-          handleNewEventSuccess={() => { }}
+          handleSubmitSuccess={handleSubmitSuccess}
           handleClose={handleClose}
           eventData={editEventObj}
         />

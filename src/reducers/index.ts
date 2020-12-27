@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import selectedDateReducer from './selectedDate';
-import UserEventsReducer from './userEvents';
+import selectedDateReducer from './SelectedDate.reducers';
+import UserEventsReducer from './UserEvents.reducers';
 
 const allReducers = combineReducers({
   selectedDate: selectedDateReducer,

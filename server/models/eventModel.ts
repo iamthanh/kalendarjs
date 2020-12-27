@@ -12,6 +12,7 @@ const eventSchema = new mongoose.Schema({
 });
 
 eventSchema.methods.verify = (data) => {
+    // TODO: work on this function to verify if the inputs are valid
     return true;
 }
 

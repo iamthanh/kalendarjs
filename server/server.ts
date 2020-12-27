@@ -32,7 +32,7 @@ db.once('open', function() {
 app.get('/api/events', async (req:any, res:any) => {
   let events = await Event.find();
   res.send(events);
-})
+});
 
 // app.get('/api/event/test', async (req:any, res:any) => {
 //   let newEvent = new Events();
@@ -49,7 +49,7 @@ app.get('/api/events', async (req:any, res:any) => {
 app.get('/api/event/:eventId', async (req:any, res:any) => {
   let event = await Event.findById(req.params.eventId);
   res.send(event);
-})
+});
 
 // Creates a new event
 app.post('/api/event', async (req:any, res:any) => {
@@ -70,10 +70,28 @@ app.post('/api/event', async (req:any, res:any) => {
     status: false,
     message: 'Failed to verify data'
   })
-})
+});
+
+app.put('/api/event', async (req:any, res:any) => {
+  const results = await Event.updateOne({_id: mongoose.Types.ObjectId(req.body.id)}, req.body);
+  if (results.nModified === 1) {
+    res.send({
+      status: true,
+      data: req.body
+    })
+  } 
+  
+  // Failed to find and update event
+  res.status(500);
+  res.send({
+    status: false
+  })
+});
+
+
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
-})
+});
 
 export {};

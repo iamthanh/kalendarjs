@@ -9,18 +9,19 @@ import Api from './../../services/api';
 import Alert from 'react-bootstrap/Alert'
 import "react-datepicker/dist/react-datepicker.css";
 
-interface eventDataInterface {
+interface EventDataInterface {
   title: string,
   description: string,
-  startDateTime: string
-  endDateTime: string,
-  allDay: boolean
+  startDateTime: Date,
+  endDateTime: Date,
+  allDay: boolean,
+  id?: string | null
 }
 
 interface EventInstanceModalProps {
   show: boolean,
   type: string,
-  handleNewEventSuccess: Function,
+  handleSubmitSuccess: Function,
   handleClose: Function,
   eventData?: any
 }
@@ -70,27 +71,52 @@ function EventInstanceModal(props: EventInstanceModalProps) {
     event.preventDefault();
     event.stopPropagation();
 
-    let data = {
+    let data: EventDataInterface = {
       'title': title.trim(),
       'description': description.trim(),
       'startDateTime': startDateTime,
       'endDateTime': endDateTime,
-      'allDay': allDay
+      'allDay': allDay,
+      'id': props.eventData._id ? props.eventData._id : null
     }
 
+    if (modalType === MODAL_TYPE_CREATE) {
+      handleCreateNewEvent(data);
+    } else if (modalType === MODAL_TYPE_EDIT) {
+      handleUpdateEvent(data);
+    }
+  }
+
+  const handleCreateNewEvent = (data: EventDataInterface) => {
     Api.createNewEvent(data).then((results) => {
       setHasError(false);
       setErrorMessage('');
 
       if (results.status) {
-        props.handleNewEventSuccess(results.data);
+        props.handleSubmitSuccess(results.data);
+      } else {
+        // Handle error within the modal
+        setHasError(true);
+        setErrorMessage(results?.error?.message);
+      }
+
+    });
+  };
+
+  const handleUpdateEvent = (data: any) => {
+    Api.updateEvent(data).then((results) => {
+      setHasError(false);
+      setErrorMessage('');
+
+      if (results.status) {
+        props.handleSubmitSuccess(results.data);
       } else {
         // Handle error within the modal
         setHasError(true);
         setErrorMessage(results?.error?.message);
       }
     });
-  }
+  };
 
   const inputHandler = (setter: Function, inputEvent) => {
     if (inputEvent.currentTarget.value.length) {
@@ -98,7 +124,7 @@ function EventInstanceModal(props: EventInstanceModalProps) {
     }
   }
 
-  const setTimeHandler = (setter:Function, time: string) => {
+  const setTimeHandler = (setter: Function, time: string) => {
     let _time = time.split(':');
 
     // Update the start time to the selected time
@@ -108,7 +134,7 @@ function EventInstanceModal(props: EventInstanceModalProps) {
       return new Date(time)
     })
   }
-  
+
   return (
     <Modal
       show={props.show}
@@ -179,9 +205,7 @@ function EventInstanceModal(props: EventInstanceModalProps) {
           )}
 
           {hasError && (
-            <Alert variant={'danger'}>
-              Failed to create event {errorMessage ? ': ' + errorMessage : ''}
-            </Alert>
+            <Alert variant={'danger'}>{errorMessage ?? ''}</Alert>
           )}
         </Modal.Body>
         <Modal.Footer>

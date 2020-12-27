@@ -5,7 +5,7 @@ import SelectedDate from './selectedDate/selectedDate';
 import EventListing from './eventListing/eventListing';
 import EventInstanceModal from './../EventModal/EventInstanceModal';
 import { store } from './../../store';
-import { addEvent } from './../../actions/userEvents';
+import { AddOneEvent } from '../../actions/Event.actions';
 
 function SidePanel() {
 
@@ -14,11 +14,11 @@ function SidePanel() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const handleNewEventSuccess = (newEvent) => {
+  const handleSubmitSuccess = (newEvent) => {
     setShow(false);
 
     // Also update the new event locally
-    store.dispatch(addEvent(newEvent));
+    store.dispatch(AddOneEvent(newEvent));
   }
 
   return (
@@ -31,11 +31,10 @@ function SidePanel() {
         </div>
       </div>
       <EventListing />
-
       <EventInstanceModal
         show={show}
         type='create'
-        handleNewEventSuccess={handleNewEventSuccess}
+        handleSubmitSuccess={handleSubmitSuccess}
         handleClose={handleClose}
       />
     </div>

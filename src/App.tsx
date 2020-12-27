@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import SidePanel from './components/sidePanel/sidePanel';
 import ConnectedMainPanel from './components/mainPanel/mainPanel';
@@ -9,7 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Api from './services/api';
 
 import { setSelectedDate } from './actions/selectedDate';
-import { setUserEvents } from './actions/userEvents';
+import { SetUserEvents } from './actions/Event.actions';
 
 function KalendarJs() {
 
@@ -19,7 +19,7 @@ function KalendarJs() {
 
     // Fetching events
     Api.getEvents().then((res) => {
-      store.dispatch(setUserEvents(res))
+      store.dispatch(SetUserEvents(res))
     })
   }, []);
 
