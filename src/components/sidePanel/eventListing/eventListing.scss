@@ -17,6 +17,30 @@
         padding: 8px;
         position: relative;
 
+        .control-icon {
+          margin-right: 10px;
+          color: #808080;
+          display: none;
+
+          &:hover {
+            cursor: pointer;
+
+            &.edit {
+              color: #007bff!important;
+            }
+
+            &.delete {
+              color: #dc3545!important;
+            }
+          }
+        }
+
+        &:hover {
+          .control-icon {
+            display: block;
+          } 
+        }
+
         &.expired {
             border-left-color: #808080;
         }
@@ -34,7 +58,7 @@
             margin-top: 10px;
         }
 
-        .ellipsis {
+        .event-controls {
           position: absolute;
           right: 20px;
           height: 25px;
@@ -45,11 +69,6 @@
           align-items: center;
           justify-content: center;
           text-align: center;
-        
-          &:hover {
-              background: #f1f1f1;
-              cursor: pointer;
-          }
         }
     }
 }

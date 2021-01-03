@@ -1,19 +1,21 @@
 import React from 'react';
-import Dropdown from 'react-bootstrap/Dropdown'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEllipsisV } from '@fortawesome/free-solid-svg-icons'
+import { faEdit } from '@fortawesome/free-solid-svg-icons'
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 
 type eventProps = {
   title: string,
   description: string,
   startDateTime: Date,
   endDateTime: Date
-  clickHandler: Function
+  editEventClickHandler: Function
 }
 
 const Event = (props: eventProps) => {
 
   const current = new Date();
+
+  const hasEventExpired = (date: Date): boolean => date < current
 
   const getReadableTime = (Date: Date) => {
     let hour: number = Date.getHours();
@@ -32,31 +34,11 @@ const Event = (props: eventProps) => {
     return hour + ':' + mins + ' ' + dayNight;
   }
 
-  const hasEventExpired = (date: Date): boolean => {
-    if (date < current) {
-      return true;
-    }
-    return false;
-  }  
-
-  const eventDropdownHandler = React.forwardRef((props: any, ref:any) => {
-    const { children, onClick } = props;
-    return (<a ref={ref} onClick={(e) => onClick(e)}>{children}</a>);
-  });
-
   return (
     <div className={'event ' + (hasEventExpired(new Date(props.startDateTime)) ? 'expired' : '')} >
-      <div className='ellipsis'>
-        <Dropdown>
-          <Dropdown.Toggle as={eventDropdownHandler} id="dropdown-basic">
-            <FontAwesomeIcon icon={faEllipsisV} />
-          </Dropdown.Toggle>
-
-          <Dropdown.Menu>
-            <Dropdown.Item href="#/action-1" onClick={() => props.clickHandler()}>Edit</Dropdown.Item>
-            <Dropdown.Item href="#/action-2">Delete</Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>        
+      <div className='event-controls'>
+        <FontAwesomeIcon icon={faEdit} onClick={() => props.editEventClickHandler()} className="control-icon edit"/>
+        <FontAwesomeIcon icon={faTrashAlt} className="control-icon delete" />
       </div>
 
       <div className='time'>{getReadableTime(new Date(props.startDateTime))}</div>

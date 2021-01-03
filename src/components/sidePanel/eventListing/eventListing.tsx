@@ -40,7 +40,7 @@ function EventListing(props: any) {
     }
   }, [props.store]);
 
-  const eventClickHandler = (event) => {
+  const editEventClickHandler = (event) => {
     setEditEventObj(event);
     setShow(true);
   }
@@ -57,7 +57,7 @@ function EventListing(props: any) {
   return (
     <div className='event-listing-container'>
       {events.length > 0 && events.map((event, i) =>
-        <Event clickHandler={() => eventClickHandler(event)} key={i} {...event} />
+        <Event editEventClickHandler={() => editEventClickHandler(event)} key={i} {...event} />
       )}
 
       {editEventObj && (
