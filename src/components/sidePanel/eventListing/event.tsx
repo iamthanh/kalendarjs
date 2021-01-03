@@ -1,4 +1,7 @@
 import React from 'react';
+import Dropdown from 'react-bootstrap/Dropdown'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEllipsisV } from '@fortawesome/free-solid-svg-icons'
 
 type eventProps = {
   title: string,
@@ -34,10 +37,28 @@ const Event = (props: eventProps) => {
       return true;
     }
     return false;
-  }
-  
+  }  
+
+  const eventDropdownHandler = React.forwardRef((props: any, ref:any) => {
+    const { children, onClick } = props;
+    return (<a ref={ref} onClick={(e) => onClick(e)}>{children}</a>);
+  });
+
   return (
-    <div className={'event ' + (hasEventExpired(new Date(props.startDateTime)) ? 'expired' : '')} onClick={()=>props.clickHandler()}>
+    <div className={'event ' + (hasEventExpired(new Date(props.startDateTime)) ? 'expired' : '')} >
+      <div className='ellipsis'>
+        <Dropdown>
+          <Dropdown.Toggle as={eventDropdownHandler} id="dropdown-basic">
+            <FontAwesomeIcon icon={faEllipsisV} />
+          </Dropdown.Toggle>
+
+          <Dropdown.Menu>
+            <Dropdown.Item href="#/action-1" onClick={() => props.clickHandler()}>Edit</Dropdown.Item>
+            <Dropdown.Item href="#/action-2">Delete</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>        
+      </div>
+
       <div className='time'>{getReadableTime(new Date(props.startDateTime))}</div>
       <div className='title'>{props.title}</div>
       <div className='desciption'>

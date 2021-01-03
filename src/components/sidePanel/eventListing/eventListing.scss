@@ -15,11 +15,7 @@
         font-size: 14px;
         border-left: 3px solid #007bff;
         padding: 8px;
-        
-        &:hover {
-            background: #f1f1f1;
-            cursor: pointer;
-        }
+        position: relative;
 
         &.expired {
             border-left-color: #808080;
@@ -36,6 +32,24 @@
 
         .desciption {
             margin-top: 10px;
+        }
+
+        .ellipsis {
+          position: absolute;
+          right: 20px;
+          height: 25px;
+          width: 25px;
+          border-radius: 50%;
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+        
+          &:hover {
+              background: #f1f1f1;
+              cursor: pointer;
+          }
         }
     }
 }

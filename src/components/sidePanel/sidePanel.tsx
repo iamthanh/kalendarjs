@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import './sidePanel.scss';
 import Button from 'react-bootstrap/Button';
 import SelectedDate from './selectedDate/selectedDate';
 import EventListing from './eventListing/eventListing';
 import EventInstanceModal from './../EventModal/EventInstanceModal';
 import { store } from './../../store';
 import { AddOneEvent } from '../../actions/Event.actions';
+
+import './sidePanel.scss';
 
 function SidePanel() {
 

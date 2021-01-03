@@ -77,7 +77,7 @@ function EventInstanceModal(props: EventInstanceModalProps) {
       'startDateTime': startDateTime,
       'endDateTime': endDateTime,
       'allDay': allDay,
-      'id': props.eventData._id ? props.eventData._id : null
+      'id': props.eventData?._id ? props.eventData._id : null
     }
 
     if (modalType === MODAL_TYPE_CREATE) {
