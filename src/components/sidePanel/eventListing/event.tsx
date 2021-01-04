@@ -1,17 +1,19 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEdit } from '@fortawesome/free-solid-svg-icons'
-import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons'
+import { faTrash } from '@fortawesome/free-solid-svg-icons'
 
-type eventProps = {
+export type EventProps = {
+  _id?: string,
   title: string,
   description: string,
   startDateTime: Date,
   endDateTime: Date
-  editEventClickHandler: Function
+  editEventClickHandler: Function,
+  deleteEventClickHandler: Function
 }
 
-const Event = (props: eventProps) => {
+const Event = (props: EventProps) => {
 
   const current = new Date();
 
@@ -36,15 +38,14 @@ const Event = (props: eventProps) => {
 
   return (
     <div className={'event ' + (hasEventExpired(new Date(props.startDateTime)) ? 'expired' : '')} >
-      <div className='event-controls'>
-        <FontAwesomeIcon icon={faEdit} onClick={() => props.editEventClickHandler()} className="control-icon edit"/>
-        <FontAwesomeIcon icon={faTrashAlt} className="control-icon delete" />
-      </div>
-
       <div className='time'>{getReadableTime(new Date(props.startDateTime))}</div>
       <div className='title'>{props.title}</div>
       <div className='desciption'>
         {props.description}
+      </div>
+      <div className='event-controls'>
+        <FontAwesomeIcon className="control-icon edit" icon={faPencilAlt} onClick={() => props.editEventClickHandler()} />
+        <FontAwesomeIcon className="control-icon delete" icon={faTrash} onClick={() => props.deleteEventClickHandler()} />
       </div>
     </div>
   )

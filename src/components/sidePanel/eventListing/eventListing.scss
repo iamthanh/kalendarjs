@@ -20,11 +20,8 @@
         .control-icon {
           margin-right: 10px;
           color: #808080;
-          display: none;
-
           &:hover {
             cursor: pointer;
-
             &.edit {
               color: #007bff!important;
             }
@@ -53,22 +50,10 @@
             font-weight: bold;
             font-size: 16px;
         }
-
-        .desciption {
-            margin-top: 10px;
-        }
-
+        
         .event-controls {
-          position: absolute;
-          right: 20px;
-          height: 25px;
-          width: 25px;
-          border-radius: 50%;
-
           display: flex;
-          align-items: center;
-          justify-content: center;
-          text-align: center;
+          justify-content: flex-end;
         }
     }
 }

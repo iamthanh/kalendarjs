@@ -24,12 +24,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 mongoose.connect(config.database.mongodb.url, config.database.mongodb.options);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
+db.once('open', function () {
   console.log('mongo is now connected');
 });
 
 // Getting all events
-app.get('/api/events', async (req:any, res:any) => {
+app.get('/api/events', async (req: any, res: any) => {
   let events = await Event.find();
   res.send(events);
 });
@@ -46,17 +46,17 @@ app.get('/api/events', async (req:any, res:any) => {
 // })
 
 // Getting an individual event
-app.get('/api/event/:eventId', async (req:any, res:any) => {
+app.get('/api/event/:eventId', async (req: any, res: any) => {
   let event = await Event.findById(req.params.eventId);
   res.send(event);
 });
 
 // Creates a new event
-app.post('/api/event', async (req:any, res:any) => {
+app.post('/api/event', async (req: any, res: any) => {
   let newEvent = new Event(req.body);
 
   // Check on the data
-  if(newEvent.verify()) {
+  if (newEvent.verify()) {
     await newEvent.save((err) => {
       if (err) return console.error(err);
     })
@@ -72,26 +72,32 @@ app.post('/api/event', async (req:any, res:any) => {
   })
 });
 
-app.put('/api/event', async (req:any, res:any) => {
-  const results = await Event.updateOne({_id: mongoose.Types.ObjectId(req.body.id)}, req.body);
+app.put('/api/event', async (req: any, res: any) => {
+  const results = await Event.updateOne({ _id: mongoose.Types.ObjectId(req.body.id) }, req.body);
   if (results.nModified === 1) {
     res.send({
       status: true,
       data: req.body
     })
-  } 
-  
+  }
   // Failed to find and update event
   res.status(500);
-  res.send({
-    status: false
-  })
+  res.send({status: false})
 });
 
-
+app.delete('/api/event', async (req: any, res: any) => {
+  await Event.deleteOne({ _id: mongoose.Types.ObjectId(req.body.eventId) }, (err) => {
+    if (err) {
+      // Failed to delete event
+      res.status(500);
+      res.send({
+        status: false
+      })
+    }
+    res.send({status: true, data: req.body})
+  });
+});
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 });
-
-export {};

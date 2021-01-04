@@ -1,19 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import Event from './event';
+import Event, { EventProps } from './event';
 import EventInstanceModal from '../../EventModal/EventInstanceModal';
-import { UpdateOneEvent } from '../../../actions/Event.actions';
+import ConfirmationModal from '../../ConfirmationModal/ConfirmationModal';
+import { UpdateOneEvent, DeleteOneEvent } from '../../../actions/Event.actions';
 import { store } from './../../../store';
+import Api from './../../../services/api';
+
 import './eventListing.scss';
 
 function EventListing(props: any) {
   const [events, setEvents] = useState<any[]>([]);
 
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const [editEventModalshow, setEditEventModalShow] = useState<boolean>(false);
+  const [deleteConfirmationShow, setDeleteConfirmationShow] = useState<boolean>(false);
 
-  const [editEventObj, setEditEventObj] = useState<Object | null>(null);
+  const handleEditEventModalClose = () => setEditEventModalShow(false);
+  const handleEditEventModalShow = () => setEditEventModalShow(true);
+
+  const handleDeleteConfirmationModalClose = () => setDeleteConfirmationShow(false);
+  const handleDeleteConfirmationModalShow = () => setDeleteConfirmationShow(true);
+
+  const [editEventObj, setEditEventObj] = useState<EventProps | null>(null);
+  const [eventToDelete, setEventToDelete] = useState<EventProps | null>(null);
 
   useEffect(() => {
 
@@ -42,31 +51,65 @@ function EventListing(props: any) {
 
   const editEventClickHandler = (event) => {
     setEditEventObj(event);
-    setShow(true);
+    setEditEventModalShow(true);
+  }
+
+  const deleteEventClickHandler = (event) => {
+    setEventToDelete(event);
+    setDeleteConfirmationShow(true);
   }
 
   const handleSubmitSuccess = (updatedEvent) => {
-    setShow(false);
-
-    // Also update the new event locally
+    setEditEventModalShow(false);
     store.dispatch(UpdateOneEvent(updatedEvent));
+  }
 
-    // Need to update locally to get the changes
+  const deleteEvent = () => {
+    if (eventToDelete) {
+      Api.deleteEvent(eventToDelete._id!).then((results) => {
+        if (results.status) {
+          setDeleteConfirmationShow(false);
+          store.dispatch(DeleteOneEvent(eventToDelete._id!));
+        } else {
+          // // Handle error within the modal
+          // setHasError(true);
+          // setErrorMessage(results?.error?.message);
+        }
+      });
+    }
+    
+    return null;
   }
 
   return (
     <div className='event-listing-container'>
       {events.length > 0 && events.map((event, i) =>
-        <Event editEventClickHandler={() => editEventClickHandler(event)} key={i} {...event} />
+        <Event
+          key={i} 
+          {...event}
+          editEventClickHandler={() => editEventClickHandler(event)} 
+          deleteEventClickHandler={() => deleteEventClickHandler(event)}
+        />
       )}
 
       {editEventObj && (
         <EventInstanceModal
-          show={show}
+          show={editEventModalshow}
           type='edit'
           handleSubmitSuccess={handleSubmitSuccess}
-          handleClose={handleClose}
+          handleClose={handleEditEventModalClose}
           eventData={editEventObj}
+        />
+      )}
+
+      {eventToDelete && (
+        <ConfirmationModal
+          show={deleteConfirmationShow}
+          confirmActionHandler={deleteEvent}
+          handleClose={handleDeleteConfirmationModalClose}
+          actionMessage={"You're about to delete event: " + eventToDelete.title}
+          confirmClickTitle={'Delete'}
+          confirmClickClass={'btn-danger'}
         />
       )}
 

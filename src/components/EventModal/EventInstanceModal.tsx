@@ -1,4 +1,4 @@
-import React, { useEffect, useState, MouseEvent, ChangeEvent } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -99,7 +99,6 @@ function EventInstanceModal(props: EventInstanceModalProps) {
         setHasError(true);
         setErrorMessage(results?.error?.message);
       }
-
     });
   };
 
@@ -141,6 +140,7 @@ function EventInstanceModal(props: EventInstanceModalProps) {
       onHide={cancelHandler}
       backdrop="static"
       keyboard={false}
+      centered
     >
       <Form onSubmit={submitHandler}>
 
@@ -209,8 +209,8 @@ function EventInstanceModal(props: EventInstanceModalProps) {
           )}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => cancelHandler()}>Cancel</Button>
-          <Button variant="primary" type='submit'>{modalType === MODAL_TYPE_CREATE ? 'Create' : 'Update'}</Button>
+          <Button size="sm" variant="secondary" onClick={() => cancelHandler()}>Cancel</Button>
+          <Button size="sm" variant="primary" type='submit'>{modalType === MODAL_TYPE_CREATE ? 'Create' : 'Update'}</Button>
         </Modal.Footer>
       </Form>
     </Modal>
